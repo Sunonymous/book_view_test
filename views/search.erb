@@ -1,0 +1,27 @@
+<h2 class="content-subhead">Search</h2>
+
+<form action="/search" method="get">
+  <input name="query" value="<%= params[:query] %>">
+  <button type="submit">Search</button>
+</form>
+
+<% if params['query'] %>
+  <% unless @chapter_hits.empty? %>
+    <h2 class="content-subhead">Results for '<%= @query %>':</h2>
+    <% @chapter_hits.each do |chap_num| %>
+      <li>
+        <h3><%= @contents[chap_num - 1] %></h3>
+        <% chapter_text = File.read("data/chp#{chap_num}.txt").split("\n\n") %>
+        <% paragraph_hits = [] %>
+        <% chapter_text.each_with_index do |pg, index| %>
+          <% paragraph_hits << index if pg.include?(@query) %>
+        <% end %>
+        <% paragraph_hits.each do |index| %>
+          <a href="<%= "/chapters/#{chap_num}\##{index}" %>"><%= highlight(chapter_text[index], @query) %></a>
+        <% end %>
+      </li>
+    <% end %>
+  <% else %>
+    <p>No results found.</p>
+  <% end %>
+<% end %>

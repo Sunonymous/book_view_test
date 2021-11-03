@@ -1,0 +1,11 @@
+<html>
+  <body>
+    <ul>
+      <% @files.each do |file| %>
+        <li><a href="/<%= "#{file}"%>"><%= file %></a></li>
+      <% end %>
+    </ul>
+    <a href="/?reverse=false">Sort Ascending</a>
+    <a href="/?reverse=true">Sort Descending</a>
+  </body>
+</html>
